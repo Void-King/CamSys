@@ -1,0 +1,5 @@
+print ('123')
+c = input('123346:')
+print (c)
+b = input('123346:')
+print (b)

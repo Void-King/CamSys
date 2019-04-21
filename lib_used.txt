@@ -1,0 +1,19 @@
+lib
+
+local
+pip install pillow -i https://pypi.tuna.tsinghua.edu.cn/simple
+pip install opencv-python -i https://pypi.tuna.tsinghua.edu.cn/simple
+pip install requests -i https://pypi.tuna.tsinghua.edu.cn/simple
+pip install pymysql -i https://pypi.tuna.tsinghua.edu.cn/simple
+
+server
+pip install web.py==0.40.dev0
+pip install lxml
+
+pack
+
+pyinstaller -F -w --ico=pic\Cam.ico .\_1_1_loginSubUIM.py --noconsole
+
+console for server
+
+nohup python main.py 9001 &
