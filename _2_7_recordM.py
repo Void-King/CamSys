@@ -28,7 +28,7 @@ def record(imgts, atktime, save_path, wxid, recordFlag, sz):
         #用户申请视频优先判断，优先级1
         if request == 2:
             times += 1
-            print (times)
+            # print (times)
             strpn = '' + time.strftime('%Y.%m.%d.%H.%M.%S',time.localtime(time.time()))
             strpn = save_path + strpn + '.mp4'
             cv2.imwrite(strpn + '.jpg', imgts[0], [int(cv2.IMWRITE_JPEG_QUALITY), 60])
@@ -51,7 +51,7 @@ def record(imgts, atktime, save_path, wxid, recordFlag, sz):
         #用户申请图片1优先判断，优先级2
         elif request == 1:
             times += 1
-            print (times)
+            # print (times)
             strpn = '' + time.strftime('%Y.%m.%d.%H.%M.%S',time.localtime(time.time()))
             strpn = save_path + strpn + ".jpg"
             cv2.imwrite(strpn, imgts[0])
@@ -67,9 +67,9 @@ def record(imgts, atktime, save_path, wxid, recordFlag, sz):
             log.close()
             time.sleep(0.3)
         #用户次数信息判断，优先级3
-        elif times == 18:
+        elif times == 19:
             times += 1
-            print (times)
+            # print (times)
             atk = atktime[1]
             content = '发送次数将到达限制，请回复任意词更新链接'.encode("utf-8").decode("latin1")
             _2_5_wxSentM.setm2user(wxid, atk, content)
@@ -79,16 +79,14 @@ def record(imgts, atktime, save_path, wxid, recordFlag, sz):
                 '''
             _1_5_sentSQLM.sql_sent(sql)
             time.sleep(0.3)
-        else:
-            pass
-        
-        if times > 20:
+
+        elif times > 19:
             time.sleep(1)
             pass
         #人脸判断，优先级4
         elif recordFlag[1]:
             times += 1
-            print (times)
+            # print (times)
             strpn = '' + time.strftime('%Y.%m.%d.%H.%M.%S',time.localtime(time.time()))
             strpn = save_path + strpn + '.mp4'
             cv2.imwrite(strpn + '.jpg', imgts[0], [int(cv2.IMWRITE_JPEG_QUALITY), 60])
@@ -97,7 +95,6 @@ def record(imgts, atktime, save_path, wxid, recordFlag, sz):
                 frame = cv2.flip(imgts[0], 1)
                 out.write(imgts[0])
             out.release()
-            recordFlag[1] = False
             atk = atktime[1]
             _2_5_wxSentM.setv2user(wxid, atk, strpn + '.jpg', strpn)
             sql = '''UPDATE `user_list`
@@ -105,16 +102,17 @@ def record(imgts, atktime, save_path, wxid, recordFlag, sz):
                 WHERE `wxid` = \'''' + wxid + '''\';
                 '''
             _1_5_sentSQLM.sql_sent(sql)
+            recordFlag[1] = False
+            recordFlag[0] = False
             time.sleep(0.3)
         #移动物体判断，优先级5
         elif recordFlag[0]:
             times += 1
-            print (times)
+            # print (times)
             time.sleep(0.7)# 等待物体主体进入画面
             strpn = '' + time.strftime('%Y.%m.%d.%H.%M.%S',time.localtime(time.time()))
             strpn = save_path + strpn + ".jpg"
             cv2.imwrite(strpn, imgts[0])
-            recordFlag[0] = False
             atk = atktime[1]
             _2_5_wxSentM.setp2user(wxid, atk, strpn)
             sql = '''UPDATE `user_list`
@@ -127,6 +125,7 @@ def record(imgts, atktime, save_path, wxid, recordFlag, sz):
                     break
                 else:
                     time.sleep(0.5)
+            recordFlag[0] = False
         #错误情况
         else:
             pass
