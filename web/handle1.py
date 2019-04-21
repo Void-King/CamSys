@@ -198,6 +198,22 @@ class Handle(object):
                     WHERE `wxid` = \'''' + str(fromUser) + '''\';
                     '''
             sql_sent(sql)
+        if str(msg)[0:2] == 'zt':
+            c = 0
+            try:
+                c = int(str(msg)[2:])
+                if 0 < c <= 90:
+                    # print (int(str(msg)[2:]))
+                    sql = '''UPDATE `user_list`
+                            SET `request` = \'3''' + str(int(str(msg)[2:])) + '''\'
+                            WHERE `wxid` = \'''' + str(fromUser) + '''\';
+                            '''
+                    sql_sent(sql)
+                    content = '系统已暂停' + str(int(str(msg)[2:])) + '分钟'
+                else:
+                    content = '请输入大于0小于等于90的整数(分钟)'
+            except:
+                pass
         # print (fromUser)
         # print (data)
 
