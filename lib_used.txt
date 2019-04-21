@@ -2,7 +2,7 @@ lib
 
 local
 pip install pillow -i https://pypi.tuna.tsinghua.edu.cn/simple
-pip install opencv-python -i https://pypi.tuna.tsinghua.edu.cn/simple
+pip install opencv-python==3.4.5.20 -i https://pypi.tuna.tsinghua.edu.cn/simple
 pip install requests -i https://pypi.tuna.tsinghua.edu.cn/simple
 pip install pymysql -i https://pypi.tuna.tsinghua.edu.cn/simple
 
