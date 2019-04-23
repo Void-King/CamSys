@@ -21,9 +21,10 @@ def record(imgts, atktime, save_path, wxid, recordFlag, sz):
         # print (request)
         #用户申请视频2优先判断，优先级1
         #用户申请图片1优先判断，优先级2
-        #用户次数信息判断，优先级3
-        #人脸判断，优先级4
-        #移动物体判断，优先级5
+        #用户暂停请求，优先级3
+        #用户次数信息判断，优先级4
+        #人脸判断，优先级5
+        #移动物体判断，优先级6
 
         #用户申请视频优先判断，优先级1
         if request == 2:
@@ -40,7 +41,7 @@ def record(imgts, atktime, save_path, wxid, recordFlag, sz):
             atk = atktime[1]
             _2_5_wxSentM.setv2user(wxid, atk, strpn + '.jpg', strpn)
             sql = '''UPDATE `user_list`
-                SET `times` = \'''' + str(times) + '''\',`request` = '0'
+                SET `times` = '1',`request` = '0'
                 WHERE `wxid` = \'''' + wxid + '''\';
                 '''
             _1_5_sentSQLM.sql_sent(sql)
@@ -58,7 +59,7 @@ def record(imgts, atktime, save_path, wxid, recordFlag, sz):
             atk = atktime[1]
             _2_5_wxSentM.setp2user(wxid, atk, strpn)
             sql = '''UPDATE `user_list`
-                SET `times` = \'''' + str(times) + '''\',`request` = '0'
+                SET `times` = '1',`request` = '0'
                 WHERE `wxid` = \'''' + wxid + '''\';
                 '''
             _1_5_sentSQLM.sql_sent(sql)
@@ -66,7 +67,27 @@ def record(imgts, atktime, save_path, wxid, recordFlag, sz):
             log.write('Get Picture\n')
             log.close()
             time.sleep(0.3)
-        #用户次数信息判断，优先级3
+        #用户暂停请求，优先级3
+        if str(request)[0:1] == '3':
+            times += 1
+            ptime = int(str(request)[1:])
+            ptime *= 60
+            print (ptime)
+            for i in range(0, ptime):
+                sql = "SELECT * FROM `user_list` WHERE `wxid`=\'" + wxid + "\'"
+                data = _1_5_sentSQLM.sql_sent(sql)
+                request = data[0][4]
+                if request == 4:
+                    break
+                print (i)
+                time.sleep(0.9)
+            sql = '''UPDATE `user_list`
+                SET `times` = '1',`request` = '0'
+                WHERE `wxid` = \'''' + wxid + '''\';
+                '''
+            _1_5_sentSQLM.sql_sent(sql)
+            print ('start')
+        #用户次数信息判断，优先级4
         elif times == 19:
             times += 1
             # print (times)
@@ -83,7 +104,7 @@ def record(imgts, atktime, save_path, wxid, recordFlag, sz):
         elif times > 19:
             time.sleep(1)
             pass
-        #人脸判断，优先级4
+        #人脸判断，优先级5
         elif recordFlag[1]:
             times += 1
             # print (times)
@@ -105,7 +126,7 @@ def record(imgts, atktime, save_path, wxid, recordFlag, sz):
             recordFlag[1] = False
             recordFlag[0] = False
             time.sleep(0.3)
-        #移动物体判断，优先级5
+        #移动物体判断，优先级6
         elif recordFlag[0]:
             times += 1
             # print (times)

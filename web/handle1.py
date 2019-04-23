@@ -214,6 +214,13 @@ class Handle(object):
                     content = '请输入大于0小于等于90的整数(分钟)'
             except:
                 pass
+        if str(msg) == 'ks':
+            sql = '''UPDATE `user_list`
+                    SET `request` = '4'
+                    WHERE `wxid` = \'''' + str(fromUser) + '''\';
+                    '''
+            sql_sent(sql)
+            content = '系统开始继续运行'
         # print (fromUser)
         # print (data)
 

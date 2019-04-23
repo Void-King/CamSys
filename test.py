@@ -22,17 +22,21 @@
 #         _1_5_sentSQLM.sql_sent(sql)
 #         print ('ok')
 #     time.sleep(2)
-a = 'zt80'
-print (str(a)[0:2])
-print (len(a))
-if str(a)[0:2] == 'zt':
-    c = 0
-    try:
-        c = int(str(a)[2:])
-        if 0 < c <= 90:
-            print (int(str(a)[2:]))
-            print ('系统已暂停' +str(a)[2:] + '分钟')
-        else:
-            print('sadf')
-    except:
-        pass
+# a = 'zt80'
+# print (str(a)[0:2])
+# print (len(a))
+# if str(a)[0:2] == 'zt':
+#     c = 0
+#     try:
+#         c = int(str(a)[2:])
+#         if 0 < c <= 90:
+#             print (int(str(a)[2:]))
+#             print ('系统已暂停' +str(a)[2:] + '分钟')
+#         else:
+#             print('sadf')
+#     except:
+#         pass
+
+i = 99
+print (i)
+print (str(i)[0:1])
