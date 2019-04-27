@@ -24,10 +24,15 @@ def get_atk(atktime, imgts):
         # atkf.close()
         for i in range(0,3600):
             # print (i)
-            if i == 1800:
+            if i == 1200 or i == 2400:
                 if len(imgts) == 2:
                     imgts[1] = None
                     # print (imgts)
+                else:
+                    # print ('Program Wrong 4')
+                    log = open(r'./wronglog.ini', 'a')
+                    log.write('Program wrong 4\n')
+                    log.close()
             if atktime[0] == -1:
                 sys.exit(0)
             atktime[0] -= 1

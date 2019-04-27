@@ -4,23 +4,27 @@ import os
 # REVOKE ALL PRIVILEGES ON *.* FROM 'wxuser'@'%' IDENTIFIED BY 'KeXncyAj';
 # GRANT ALL PRIVILEGES ON wxuserdb.* TO 'wxuser'@'%' IDENTIFIED BY 'KeXncyAj';
 def sql_sent(sqle):
-    db = pymysql.connect("123.207.117.11","wxuser","KeXncyAj","wxuserdb")
-    cursor = db.cursor()
-    cursor.execute(sqle)
-    if sqle[:6] == 'SELECT':
-        data = cursor.fetchall()
-        return data
-    elif sqle[:6] == 'INSERT':
-        db.commit()
-    elif sqle[:6] == 'UPDATE':
-        db.commit()
-    else:
-        log = open(r'./wronglog.ini','a')
-        log.write('Program wrong 3\n')
+    try:
+        db = pymysql.connect("123.207.117.11", "wxuser", "KeXncyAj", "wxuserdb")
+        # print(db)
+        cursor = db.cursor()
+        cursor.execute(sqle)
+        if sqle[:6] == 'SELECT':
+            data = cursor.fetchall()
+            return data
+        elif sqle[:6] == 'INSERT':
+            db.commit()
+        elif sqle[:6] == 'UPDATE':
+            db.commit()
+        else:
+            pass
+        db.close()
+    except:
+        # print ('Program wrong 2')
+        log = open(r'./wronglog.ini', 'a')
+        log.write('Program wrong 2\n')
         log.close()
-        # print('Program Wrong 3')
-    db.close()
-
+# sql_sent('123')
 # sql = '''UPDATE `user_list`
 # SET `times` = '0',`request` = '1'
 # WHERE `wxid` = \'''' + wxid + '''\';

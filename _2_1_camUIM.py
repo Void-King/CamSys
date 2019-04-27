@@ -58,9 +58,9 @@ def camUI(save_path, wxid):
             imgts.append(img)
             imgts.append(background)
         else:
-            # print ('Program Wrong 4') #摄像头读取失败
+            # print ('Program Wrong 3') #摄像头读取失败
             log = open(r'./wronglog.ini','a')
-            log.write('Program wrong 4\n')
+            log.write('Program wrong 3\n')
             log.close()
         root = tk.Tk()
         root.iconbitmap('./pic/Cam.ico')
@@ -92,9 +92,9 @@ def camUI(save_path, wxid):
                 #     recordFlag[1] = False
                 vidlabel.after(10, video_change)
             else:
-                # print ('Program Wrong 4') #摄像头读取失败
+                # print ('Program Wrong 3') #摄像头读取失败
                 log = open(r'./wronglog.ini','a')
-                log.write('Program wrong 4\n')
+                log.write('Program wrong 3\n')
                 log.close()
         def endProgram():
             nonlocal atktime, camera, root, save_path

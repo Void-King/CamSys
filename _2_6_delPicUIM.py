@@ -4,7 +4,13 @@ import sys
 def delPicUI(save_path):
     root = tk.Tk()
     root.title('Del')
-    root.iconbitmap('./pic/Cam.ico')
+    try:
+        root.iconbitmap('./pic/Cam.ico')
+    except:
+        # print ('Program wrong 1')
+        log1 = open(r'./wronglog.ini', 'a')
+        log1.write('Program wrong 1\n')
+        log1.close()
     root.resizable(0, 0)
     label = tk.Label(root, text = '是否删除保存的图片和视频?')
     label.pack(padx = 20, pady = 10)
@@ -13,10 +19,15 @@ def delPicUI(save_path):
     def del_file():
         nonlocal save_path
         # print (save_path)
-        ls = os.listdir(save_path)
-        for i in ls:
-            c_path = os.path.join(save_path, i)
-            os.remove(c_path)
+        try:
+            ls = os.listdir(save_path)
+            for i in ls:
+                c_path = os.path.join(save_path, i)
+                os.remove(c_path)
+        except:
+            log = open(r'./wronglog.ini', 'a')
+            log.write('Program wrong 6\n')
+            log.close()
         sys.exit(0)
     def quitconf():
         sys.exit(0)

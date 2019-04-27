@@ -10,7 +10,13 @@ save_path = './pic/movesave/'
 
 def loginSubUI():
     root = tk.Tk()
-    root.iconbitmap('./pic/Cam.ico')
+    try:
+        root.iconbitmap('./pic/Cam.ico')
+    except:
+        # print ('Program wrong 1')
+        log1 = open(r'./wronglog.ini', 'a')
+        log1.write('Program wrong 1\n')
+        log1.close()
     root.title('Login')
     root.resizable(0, 0)
     frame = tk.Frame(root)
@@ -44,10 +50,7 @@ def loginSubUI():
         elif userFlag[0] == 3:
             msgla.configure(text = '不能为空')
         else:
-            # print ('Program wrong 1')
-            log = open(r'./wronglog.ini','a')
-            log.write('Program wrong 1\n')
-            log.close()
+            msgla.configure(text='数据库连接错误')
     def registerBC():
         _1_3_addUserUIM.addUserUI()
     
