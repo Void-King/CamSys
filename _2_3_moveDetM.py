@@ -43,6 +43,6 @@ def moveDet(img, imgts, recordFlag):
             recordFlag[0] = True
             # print("出现目标物，请求核实")
             #人脸识别
-            img = _2_4_faceDetM.faceDet(img, c, recordFlag)
+            img = _2_4_faceDetM.faceDet(img, recordFlag)
             break
         imgts[0] = img

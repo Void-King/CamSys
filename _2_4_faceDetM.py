@@ -2,13 +2,12 @@ import cv2
 import time
 import os
 
-def faceDet(img, c, recordFlag):
+def faceDet(img, recordFlag):
     try:
         face_cascade = cv2.CascadeClassifier(r"./pic/haarcascade_frontalface_default.xml")
         grayOfFacedet = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
         faces = face_cascade.detectMultiScale(grayOfFacedet, 1.3, 5)
         if len(faces) > 0:
-            # (x, y, w, h) = cv2.boundingRect(c)
             for (x, y, w, h) in faces:
                 cv2.rectangle(img, (x, y), (x + w, y + w), (0, 255, 0), 2)
             cv2.putText(img, "Detect Faces", (10, 50),
