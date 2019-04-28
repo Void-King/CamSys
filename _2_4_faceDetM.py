@@ -4,7 +4,8 @@ import os
 
 def faceDet(img, recordFlag):
     try:
-        face_cascade = cv2.CascadeClassifier(r"./pic/haarcascade_frontalface_default.xml")
+        facexml = r"./pic/haarcascade_frontalface_default.xml"
+        face_cascade = cv2.CascadeClassifier(facexml)
         grayOfFacedet = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
         faces = face_cascade.detectMultiScale(grayOfFacedet, 1.3, 5)
         if len(faces) > 0:
