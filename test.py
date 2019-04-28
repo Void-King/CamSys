@@ -35,12 +35,15 @@
 #         else:
 #             print('sadf')
 #     except:
-#         pass
-import cv2
-camera = cv2.VideoCapture(1)
-while True:
-    suc, img = camera.read()
-    cv2.imshow('title',img)
-    cv2.waitKey(200)
-camera.release()
-cv2.destroyAllWindows()
+# #         pass
+# import cv2
+# camera = cv2.VideoCapture(1)
+# while True:
+#     suc, img = camera.read()
+#     cv2.imshow('title',img)
+#     cv2.waitKey(200)
+# camera.release()
+# cv2.destroyAllWindows()
+log = open(r'./wronglog.ini','a')
+print (type(log))
+log.close()

@@ -21,10 +21,10 @@ def record(imgts, atktime, save_path, wxid, recordFlag, sz):
         # print (request)
         #用户申请视频2优先判断，优先级1
         #用户申请图片1优先判断，优先级2
-        #用户暂停请求，优先级3
-        #用户次数信息判断，优先级4
-        #人脸判断，优先级5
-        #移动物体判断，优先级6
+        #用户暂停/继续运行请求，优先级3
+        #用户连接次数(20次限制)信息判断，优先级4
+        #人脸报警发送信息判断，优先级5
+        #移动物体报警发送信息判断，优先级6
 
         #用户申请视频优先判断，优先级1
         if request == 2:
@@ -68,7 +68,7 @@ def record(imgts, atktime, save_path, wxid, recordFlag, sz):
             log.close()
             time.sleep(0.3)
         #用户暂停请求，优先级3
-        if str(request)[0:1] == '3':
+        elif str(request)[0:1] == '3':
             times += 1
             ptime = int(str(request)[1:])
             ptime *= 60
@@ -91,6 +91,8 @@ def record(imgts, atktime, save_path, wxid, recordFlag, sz):
             recordFlag[1] = False
             _1_5_sentSQLM.sql_sent(sql)
             print ('start')
+        elif request == 4:
+            pass
         #用户次数信息判断，优先级4
         elif times == 19:
             times += 1
