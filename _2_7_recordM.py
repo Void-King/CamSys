@@ -8,6 +8,11 @@ import _1_5_sentSQLM
 
 def record(imgts, atktime, save_path, wxid, recordFlag, sz):
     fourcc = cv2.VideoWriter_fourcc('m', 'p', '4', 'v')# 视频格式
+    sql = '''UPDATE `user_list`
+            SET `request` = '0'
+            WHERE `wxid` = \'''' + wxid + '''\';
+            '''
+    _1_5_sentSQLM.sql_sent(sql)
     while True:
         time.sleep(0.7)# 循环间隔
         if atktime[0] == -1:#程序退出判断

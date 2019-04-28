@@ -41,7 +41,6 @@ def moveDet(img, imgts, recordFlag):
             cv2.putText(img, "Detect Move at time: {}".format(str(time.strftime('%Y-%m-%d %H:%M:%S',time.localtime(time.time()))) ), (10, 20),
                         cv2.FONT_HERSHEY_SIMPLEX, 0.6, (0, 0, 255), 2)
             recordFlag[0] = True
-            # print("出现目标物，请求核实")
             #人脸识别
             img = _2_4_faceDetM.faceDet(img, recordFlag)
             break
