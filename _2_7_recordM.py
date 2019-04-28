@@ -72,19 +72,23 @@ def record(imgts, atktime, save_path, wxid, recordFlag, sz):
             times += 1
             ptime = int(str(request)[1:])
             ptime *= 60
-            print (ptime)
+            # print (ptime)
             for i in range(0, ptime):
+                if atktime[0] == -1:#程序退出判断
+                    sys.exit(0)
                 sql = "SELECT * FROM `user_list` WHERE `wxid`=\'" + wxid + "\'"
                 data = _1_5_sentSQLM.sql_sent(sql)
                 request = data[0][4]
                 if request == 4:
                     break
-                print (i)
+                # print (i)
                 time.sleep(0.9)
             sql = '''UPDATE `user_list`
                 SET `times` = '1',`request` = '0'
                 WHERE `wxid` = \'''' + wxid + '''\';
                 '''
+            recordFlag[0] = False
+            recordFlag[1] = False
             _1_5_sentSQLM.sql_sent(sql)
             print ('start')
         #用户次数信息判断，优先级4

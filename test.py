@@ -36,7 +36,11 @@
 #             print('sadf')
 #     except:
 #         pass
-
-i = 99
-print (i)
-print (str(i)[0:1])
+import cv2
+camera = cv2.VideoCapture(1)
+while True:
+    suc, img = camera.read()
+    cv2.imshow('title',img)
+    cv2.waitKey(200)
+camera.release()
+cv2.destroyAllWindows()
