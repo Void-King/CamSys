@@ -42,7 +42,7 @@ def loginSubUI():
             # print (wxid)#得到wxid
             # 进入监控窗口
             root.destroy()
-            _2_1_camUIM.camUI(save_path, wxid)
+            _2_1_camUIM.camUI(save_path, userc, wxid)
         elif userFlag[0] == 1:
             msgla.configure(text = '密码错误')
         elif userFlag[0] == 2:

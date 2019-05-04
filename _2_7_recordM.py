@@ -2,11 +2,13 @@ import time
 import sys
 import os
 import cv2
+import re
+
 import _2_5_wxSentM
 import _1_5_sentSQLM
 # import _2_2_atkM
 
-def record(imgts, atktime, save_path, wxid, recordFlag, sz):
+def record(imgts, atktime, save_path, username, wxid, recordFlag, sz):
     fourcc = cv2.VideoWriter_fourcc('m', 'p', '4', 'v')# 视频格式
     sql = '''UPDATE `user_list`
             SET `request` = '0'
@@ -35,7 +37,11 @@ def record(imgts, atktime, save_path, wxid, recordFlag, sz):
         if request == 2:
             times += 1
             # print (times)
-            strpn = '' + time.strftime('%Y.%m.%d.%H.%M.%S',time.localtime(time.time()))
+            strpn = '' + time.strftime('%Y-%m-%d %H.%M.%S',time.localtime(time.time()))
+            strpnfd = re.sub('\.+', ':', strpn)
+            sqle = r"INSERT INTO activity_inf VALUES ('" + username + r"', '\
+                        " + strpnfd + r"', '用户申请录像')"
+            _1_5_sentSQLM.sql_sent(sqle)
             strpn = save_path + strpn + '.mp4'
             cv2.imwrite(strpn + '.jpg', imgts[0], [int(cv2.IMWRITE_JPEG_QUALITY), 60])
             out = cv2.VideoWriter(strpn,fourcc,120,sz[0],True)
@@ -58,7 +64,11 @@ def record(imgts, atktime, save_path, wxid, recordFlag, sz):
         elif request == 1:
             times += 1
             # print (times)
-            strpn = '' + time.strftime('%Y.%m.%d.%H.%M.%S',time.localtime(time.time()))
+            strpn = '' + time.strftime('%Y-%m-%d %H.%M.%S',time.localtime(time.time()))
+            strpnfd = re.sub('\.+', ':', strpn)
+            sqle = r"INSERT INTO activity_inf VALUES ('" + username + r"', '\
+                        " + strpnfd + r"', '用户申请截图')"
+            _1_5_sentSQLM.sql_sent(sqle)
             strpn = save_path + strpn + ".jpg"
             cv2.imwrite(strpn, imgts[0])
             atk = atktime[1]
@@ -76,6 +86,10 @@ def record(imgts, atktime, save_path, wxid, recordFlag, sz):
         elif str(request)[0:1] == '3':
             times += 1
             ptime = int(str(request)[1:])
+            strpn = '' + time.strftime('%Y-%m-%d %H:%M:%S',time.localtime(time.time()))
+            sqle = r"INSERT INTO activity_inf VALUES ('" + username + r"', '\
+                        " + strpn + r"', '用户申请暂停" + str(ptime) + r"分钟')"
+            _1_5_sentSQLM.sql_sent(sqle)
             ptime *= 60
             # print (ptime)
             for i in range(0, ptime):
@@ -85,6 +99,10 @@ def record(imgts, atktime, save_path, wxid, recordFlag, sz):
                 data = _1_5_sentSQLM.sql_sent(sql)
                 request = data[0][4]
                 if request == 4:
+                    strpn = '' + time.strftime('%Y-%m-%d %H:%M:%S',time.localtime(time.time()))
+                    sqle = r"INSERT INTO activity_inf VALUES ('" + username + r"', '\
+                                " + strpn + r"', '用户申请继续')"
+                    _1_5_sentSQLM.sql_sent(sqle)
                     break
                 # print (i)
                 time.sleep(0.9)
@@ -95,7 +113,7 @@ def record(imgts, atktime, save_path, wxid, recordFlag, sz):
             recordFlag[0] = False
             recordFlag[1] = False
             _1_5_sentSQLM.sql_sent(sql)
-            print ('start')
+            # print ('start')
         elif request == 4:
             pass
         #用户次数信息判断，优先级4
@@ -104,6 +122,10 @@ def record(imgts, atktime, save_path, wxid, recordFlag, sz):
             # print (times)
             atk = atktime[1]
             content = '发送次数将到达限制，请回复任意词更新链接'.encode("utf-8").decode("latin1")
+            strpn = '' + time.strftime('%Y-%m-%d %H:%M:%S',time.localtime(time.time()))
+            sqle = r"INSERT INTO alarm_inf VALUES ('" + username + r"', '\
+                        " + strpn + r"', '用户连接次数极限报警')"
+            _1_5_sentSQLM.sql_sent(sqle)
             _2_5_wxSentM.setm2user(wxid, atk, content)
             sql = '''UPDATE `user_list`
                 SET `times` = \'''' + str(times) + '''\'
@@ -119,7 +141,11 @@ def record(imgts, atktime, save_path, wxid, recordFlag, sz):
         elif recordFlag[1]:
             times += 1
             # print (times)
-            strpn = '' + time.strftime('%Y.%m.%d.%H.%M.%S',time.localtime(time.time()))
+            strpn = '' + time.strftime('%Y-%m-%d %H.%M.%S',time.localtime(time.time()))
+            strpnfd = re.sub('\.+', ':', strpn)
+            sqle = r"INSERT INTO alarm_inf VALUES ('" + username + r"', '\
+                        " + strpnfd + r"', '人脸检测录像报警')"
+            _1_5_sentSQLM.sql_sent(sqle)
             strpn = save_path + strpn + '.mp4'
             cv2.imwrite(strpn + '.jpg', imgts[0], [int(cv2.IMWRITE_JPEG_QUALITY), 60])
             out = cv2.VideoWriter(strpn,fourcc,120,sz[0],True)
@@ -142,7 +168,11 @@ def record(imgts, atktime, save_path, wxid, recordFlag, sz):
             times += 1
             # print (times)
             time.sleep(0.7)# 等待物体主体进入画面
-            strpn = '' + time.strftime('%Y.%m.%d.%H.%M.%S',time.localtime(time.time()))
+            strpn = '' + time.strftime('%Y-%m-%d %H.%M.%S',time.localtime(time.time()))
+            strpnfd = re.sub('\.+', ':', strpn)
+            sqle = r"INSERT INTO alarm_inf VALUES ('" + username + r"', '\
+                        " + strpnfd + r"', '移动检测截图报警')"
+            _1_5_sentSQLM.sql_sent(sqle)
             strpn = save_path + strpn + ".jpg"
             cv2.imwrite(strpn, imgts[0])
             atk = atktime[1]

@@ -1,3 +1,5 @@
+import time
+
 import _1_5_sentSQLM
 def vaildLoginUser(userc, passc):
     userFlag = [4,'null']
@@ -18,6 +20,10 @@ def vaildLoginUser(userc, passc):
                 if username == userc:
                     if password == passc:
                         userFlag = [0, userwxid]  # 验证成功返回0和wxid
+                        strpn = '' + time.strftime('%Y-%m-%d %H:%M:%S',time.localtime(time.time()))
+                        sqle = r"INSERT INTO activity_inf VALUES ('" + username + r"', '\
+                            " + strpn + r"', '用户登录')"
+                        _1_5_sentSQLM.sql_sent(sqle)
                         # print('suc')
                         break
                     else:

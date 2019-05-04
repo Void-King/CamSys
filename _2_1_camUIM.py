@@ -7,15 +7,17 @@ import sys
 import os
 import time
 
+import _1_5_sentSQLM
 import _2_2_atkM
 import _2_3_moveDetM
 import _2_6_delPicUIM
 import _2_7_recordM
 
+
 atktime = [3600,'Null']
 sz = []
 
-def camUI(save_path, wxid):
+def camUI(save_path, username, wxid):
     global atktime
     imgts = [] # 0 是实时帧图像画面 1是检测背景对比图
     recordFlag = [False, False]
@@ -35,21 +37,22 @@ def camUI(save_path, wxid):
         def run(self):
             camUIThread(atktime)
     class thread3 (threading.Thread):
-        def __init__(self, atktime, imgts, save_path, wxid, recordFlag, sz):
+        def __init__(self, atktime, imgts, save_path, username, wxid, recordFlag, sz):
             threading.Thread.__init__(self)
             self.atktime = atktime
             self.imgts = imgts
             self.save_path = save_path
+            self.username = username
             self.wxid = wxid
             self.recordFlag = recordFlag
             self.sz = sz
         def run(self):
-            _2_7_recordM.record(imgts, atktime, save_path, wxid, recordFlag, sz)
+            _2_7_recordM.record(imgts, atktime, save_path, username, wxid, recordFlag, sz)
 
     def camUIThread(atktime):
         global sz
         # 摄像头
-        camera = cv2.VideoCapture(1)
+        camera = cv2.VideoCapture(0)
         suc, img = camera.read()
         background = None
         if suc:
@@ -97,7 +100,11 @@ def camUI(save_path, wxid):
                 log.write('Program wrong 3\n')
                 log.close()
         def endProgram():
-            nonlocal atktime, camera, root, save_path
+            nonlocal atktime, camera, root, save_path, username
+            strpn = '' + time.strftime('%Y-%m-%d %H:%M:%S',time.localtime(time.time()))
+            sqle = r"INSERT INTO activity_inf VALUES ('" + username + r"', '\
+                        " + strpn + r"', '用户退出')"
+            _1_5_sentSQLM.sql_sent(sqle)
             atktime[0] = -1
             _2_6_delPicUIM.delPicUI(save_path)
             camera.release()
@@ -185,7 +192,7 @@ def camUI(save_path, wxid):
 
     th1 = thread1(atktime, imgts)
     th2 = thread2(atktime)
-    th3 = thread3(imgts, atktime, save_path, wxid, recordFlag, sz)
+    th3 = thread3(imgts, atktime, save_path, username, wxid, recordFlag, sz)
     th1.start()
     th2.start()
     th3.start()
